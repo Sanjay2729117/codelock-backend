@@ -15,9 +15,7 @@ import java.util.Optional;
 @Repository
 public interface QuestionRepo extends JpaRepository<Questionsmodels, Long> {
     Optional<Questionsmodels> findBytitle(String title);
-//    @Query(value = "SELECT * FROM questions WHERE difficulty = :difficulty LIMIT :count", nativeQuery = true)
-//    List<Questionsmodels> findQuestionsByDifficultyWithLimit(@Param("difficulty") Questionsmodels.Difficulty difficulty, @Param("count") int count);
-    @Query(value = "SELECT * FROM questions WHERE difficulty = :difficulty ORDER BY RAND() LIMIT :count", nativeQuery = true)
-    List<Questionsmodels> findQuestionsByDifficultyWithLimit(@Param("difficulty") Questionsmodels.Difficulty difficulty, @Param("count") int count);
+    @Query(value = "SELECT * FROM questions WHERE UPPER(difficulty) = :difficulty ORDER BY RAND() LIMIT :count", nativeQuery = true)
+    List<Questionsmodels> findQuestionsByDifficultyWithLimit(@Param("difficulty") String difficulty, @Param("count") int count);
 
 }

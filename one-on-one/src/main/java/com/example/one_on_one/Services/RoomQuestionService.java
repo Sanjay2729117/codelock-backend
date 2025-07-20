@@ -28,7 +28,7 @@ public class RoomQuestionService {
 
 
     public void setques(RoomModels room) {
-        List<Questionsmodels> questionsmodels = questionRepo.findQuestionsByDifficultyWithLimit(room.getDifficulty(),room.getNum_questions());
+        List<Questionsmodels> questionsmodels = questionRepo.findQuestionsByDifficultyWithLimit(room.getDifficulty().name(), room.getNum_questions());
         int position=1;
          for (Questionsmodels ques:questionsmodels){
             roomQuestionsModel roomQuestionsModel = new roomQuestionsModel();

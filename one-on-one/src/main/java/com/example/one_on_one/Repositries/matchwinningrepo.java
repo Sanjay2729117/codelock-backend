@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface matchwinningrepo extends JpaRepository<matchwinning, Long> {
+
     List<matchwinning> findByRoom(String room);
-    boolean existsByRoom(String room);
+    boolean existsByRoomAndUser(String room, UserModels User);
+
 }

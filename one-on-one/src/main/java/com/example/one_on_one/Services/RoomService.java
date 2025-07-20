@@ -156,11 +156,11 @@ public class RoomService {
         return "success";
     }
 
-    public String start(String roomCode) {
+    public RoomModels start(String roomCode) {
         RoomModels room = roomrepo.findByRoomCode(roomCode).get();
         room.setStatus(RoomModels.status.ONGOING);
         roomrepo.save(room);
-        return "success";
+        return room;
     }
     public String end(String roomCode) {
         RoomModels room = roomrepo.findByRoomCode(roomCode).get();

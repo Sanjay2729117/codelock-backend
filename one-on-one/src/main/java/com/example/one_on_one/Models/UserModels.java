@@ -19,17 +19,17 @@ public class UserModels {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password")
+   @Column(name = "password")
     private String password;
 
     @Column(name = "totalmatch")
-    private int totalmatch;
+    private Integer totalmatch;
 
     @Column(name = "wins")
-    private int wins;
+    private Integer wins;
 
     @Column(name = "losses")
-    private int losses;
+    private Integer losses;
 
     @Column(name = "created_at")
     private LocalDateTime created;
@@ -45,7 +45,11 @@ public class UserModels {
     }
 
     public UserModels() {
+        this.totalmatch = 0;
+        this.wins = 0;
+        this.losses = 0;
     }
+
 
     @PrePersist
     protected void onCreate() {

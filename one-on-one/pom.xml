@@ -35,7 +35,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+		<!-- REMOVED springfox-swagger2 -->
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+		<!-- REMOVED springfox-swagger-ui -->
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
+		<!-- REMOVED springfox-boot-starter -->
+		<!-- Add springdoc-openapi for Swagger UI support in Spring Boot 3.x -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
+		</dependency>
 		<!-- WebSocket Support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -75,6 +86,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
 		</dependency>
 	</dependencies>
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -26,20 +27,21 @@ public class RoomControllers {
         return roomService.getRoom(roomCode);
     }
     // WebSocket controller to notify start
-    @MessageMapping("/start-test/{roomCode}")
-    @SendTo("/topic/start/{roomCode}")
-    public String notifyStart(@DestinationVariable String roomCode) {
-        return "start";
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @PostMapping("/api/room/start/{roomCode}")
+    public String start(@PathVariable String roomCode){
+        RoomModels room = roomService.start(roomCode);
+        messagingTemplate.convertAndSend("/topic/room-info", room);
+        return "success";
     }
 
     @PostMapping("/api/room/join")
     public String joinRoom(@RequestBody Map<String,Object> guest){
         return roomService.joinroom(guest);
     }
-    @PostMapping("/api/room/start/{roomCode}")
-    public String start(@PathVariable String roomCode){
-        return roomService.start(roomCode);
-    }
+
     @PostMapping("/api/room/end/{roomCode}")
     public String end(@PathVariable String roomCode){
         return roomService.end(roomCode);

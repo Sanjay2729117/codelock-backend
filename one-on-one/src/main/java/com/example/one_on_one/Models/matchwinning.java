@@ -14,9 +14,10 @@ public class matchwinning{
     private String room;
 
 
+    // In matchwinning entity:
     @ManyToOne
-    @JoinColumn(name = "User")
-    private UserModels User;
+    @JoinColumn(name = "user_id", nullable = false)  // Lowercase user_id
+    private UserModels user; // lower-case 'u'
 
     public String getRoom() {
         return room;
@@ -30,12 +31,14 @@ public class matchwinning{
 
 
     public UserModels getUser() {
-        return User;
+        return user;
     }
 
     public void setUser(UserModels user) {
-        User = user;
+        this.user = user; // CORRECT!
     }
+
+
 
 
     public int getTotalScore() {

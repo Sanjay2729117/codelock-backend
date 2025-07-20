@@ -13,6 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws") // 👈 This must match your frontend
                 .setAllowedOriginPatterns("*") // For development only; restrict in prod
                 .withSockJS(); // Enable SockJS fallback
+
     }
 
     @Override

@@ -24,37 +24,42 @@ public class MatchwinningService {
     @Autowired
     matchwinningrepo matchwinningrepo;
     public String winner(Map<String,Object> user){
-        String roomcode =(String) user.get("roomCode");
-        UserModels users = userRepo.findByUsername((String) user.get("username")).get();
-        if(matchwinningrepo.existsByRoom(roomcode)) {
+        String roomcode = (String) user.get("roomCode");
+        String username = (String) user.get("username");
+        UserModels users = userRepo.findByUsername(username).orElseThrow();
+        Long userId = users.getId();
+
+        // Only insert if not already present for this user and room
+        if(!matchwinningrepo.existsByRoomAndUser(roomcode, users)) {
             matchwinning matchwinning = new matchwinning();
             matchwinning.setRoom(roomcode);
             matchwinning.setUser(users);
-            matchwinning.setTotalScore(submissionRepo.getTotalScoreByUserAndRoom(roomcode,(String) user.get("username")));
-            matchwinningrepo.save(matchwinning);
-        }else{
-            matchwinning matchwinning = new matchwinning();
-            matchwinning.setRoom(roomcode);
-            matchwinning.setUser(users);
-            matchwinning.setTotalScore(submissionRepo.getTotalScoreByUserAndRoom(roomcode,(String) user.get("username")));
+            Integer totalscore = submissionRepo.getTotalScoreByUserAndRoom(roomcode, userId); // Pass user ID!
+            matchwinning.setTotalScore(totalscore == null ? 0 : totalscore);
             matchwinningrepo.save(matchwinning);
         }
-        if(matchwinningrepo.findByRoom(roomcode).size()>=2){
-            List<matchwinning> matches = matchwinningrepo.findByRoom(roomcode);
-            if(matches.get(0).getTotalScore()>matches.get(1).getTotalScore()){
-                matches.get(0).setWinner(true);
-                matches.get(1).setWinner(false);
-            }else if(matches.get(0).getTotalScore()<matches.get(1).getTotalScore()){
-                matches.get(1).setWinner(true);
-                matches.get(0).setWinner(false);
-            }else{
-                matches.get(1).setWinner(true);
-                matches.get(0).setWinner(true);
+
+        List<matchwinning> matches = matchwinningrepo.findByRoom(roomcode);
+        if(matches.size() >= 2){
+            matchwinning m1 = matches.get(0);
+            matchwinning m2 = matches.get(1);
+
+            if(m1.getTotalScore() > m2.getTotalScore()){
+                m1.setWinner(true);
+                m2.setWinner(false);
+            } else if(m1.getTotalScore() < m2.getTotalScore()){
+                m2.setWinner(true);
+                m1.setWinner(false);
+            } else {
+                m1.setWinner(true);
+                m2.setWinner(true);
             }
-            matchwinningrepo.save(matches.get(0));
-            matchwinningrepo.save(matches.get(1));
-            RoomModels roomModels = roomrepo.findByRoomCode(roomcode).get();
+            matchwinningrepo.save(m1);
+            matchwinningrepo.save(m2);
+
+            RoomModels roomModels = roomrepo.findByRoomCode(roomcode).orElseThrow();
             roomModels.setStatus(RoomModels.status.COMPLETED);
+            roomrepo.save(roomModels);
         }
 
         return "completed";

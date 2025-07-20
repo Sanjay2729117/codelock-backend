@@ -12,5 +12,6 @@ import java.util.Optional;
 public interface RoomQuestionsrepo extends JpaRepository<roomQuestionsModel, Long> {
     List<roomQuestionsModel> findByRoom(String room);
 
+
 }
 
