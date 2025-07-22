@@ -26,6 +26,10 @@ public class RoomControllers {
         String roomCode = payload.get("roomCode");
         return roomService.getRoom(roomCode);
     }
+    @GetMapping("/api/timer/{roomCode}")
+    private int getTimer(@PathVariable String roomCode){
+        return roomService.getTimer(roomCode);
+    }
     // WebSocket controller to notify start
     @Autowired
     private SimpMessagingTemplate messagingTemplate;

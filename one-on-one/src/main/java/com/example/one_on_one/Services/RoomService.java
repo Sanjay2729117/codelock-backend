@@ -168,4 +168,9 @@ public class RoomService {
         roomrepo.save(room);
         return "Ended";
     }
+
+    public int getTimer(String roomCode) {
+        RoomModels room = roomrepo.findByRoomCode(roomCode).get();
+        return room.getTimer();
+    }
 }
