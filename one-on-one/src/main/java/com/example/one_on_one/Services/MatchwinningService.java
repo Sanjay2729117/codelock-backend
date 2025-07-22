@@ -33,6 +33,7 @@ public class MatchwinningService {
         if(!matchwinningrepo.existsByRoomAndUser(roomcode, users)) {
             matchwinning matchwinning = new matchwinning();
             matchwinning.setRoom(roomcode);
+            users.setTotalmatch(users.getTotalmatch()+1);
             matchwinning.setUser(users);
             Integer totalscore = submissionRepo.getTotalScoreByUserAndRoom(roomcode, userId); // Pass user ID!
             matchwinning.setTotalScore(totalscore == null ? 0 : totalscore);
@@ -46,12 +47,20 @@ public class MatchwinningService {
 
             if(m1.getTotalScore() > m2.getTotalScore()){
                 m1.setWinner(true);
+                m1.getUser().setWins(m1.getUser().getWins()+1);
                 m2.setWinner(false);
+
+                m2.getUser().setLosses(m2.getUser().getLosses()+1);
             } else if(m1.getTotalScore() < m2.getTotalScore()){
                 m2.setWinner(true);
+                m2.getUser().setWins(m2.getUser().getWins()+1);
                 m1.setWinner(false);
+
+                m1.getUser().setLosses(m1.getUser().getLosses()+1);
             } else {
                 m1.setWinner(true);
+                m2.getUser().setWins(m2.getUser().getWins()+1);
+                m1.getUser().setWins(m1.getUser().getWins()+1);
                 m2.setWinner(true);
             }
             matchwinningrepo.save(m1);
